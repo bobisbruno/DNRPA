@@ -1,0 +1,52 @@
+Buenas tardes Carlos/Gastón,
+Acorde al pedido de la ANSES y a lo hablado por teléfono, les envío certificado electrónico para acceder al servicio web WS-DominiosPorCuitANSES, junto con un instructivo. 
+Recordar que el certificado tiene una vigencia de 2 años. Passw. certificado: as47dn18
+El horario habilitado en el servicio de producción es 18 a 22 hs.
+Para el servicio de testing utilicen la url: https://www.ws1.dnrpa.gov.ar/WS-DominiosPorCuitANSES-TEST/WS-DominiosPorCuitANSES.wsdl (con el mismo certificado).
+No tiene restricción de horario.
+Lista de cuits habilitadas para testing:
+27106494342 - con datos
+27282019758 - con datos
+27949420766 - con datos
+12121212121 - vacío
+1212121212  - error de longitud
+
+
+Se solicita la creacion en ambiente de produccion  del web service ServicioDNRPA.WS
+Para ello se requiere proceder con las siguientes tareas:
+1- Crear servicio web, y publicar en el mismo los paquetes ubicados en:
+\\ANSESNAS\Sistemas\Sistemas\DOCUMENTACION SISTEMAS ENTORNO ABIERTO\VT-VentanillaUnica\V10 - 20180920\Servicio
+
+2- Actualizar entrada "Path_Certificado" del web.config, con la ubicacion fisica del certificado mas el nombre del mismo.
+La aplicacion debera tener los accesos correspondientes a la ruta del certificado de modo de poder acceder al mismo en tiempo de ejecucion.
+
+3- La ruta donde se encuentra el certificado es:
+\\ANSESNAS\Sistemas\Sistemas\DOCUMENTACION SISTEMAS ENTORNO ABIERTO\VT-VentanillaUnica\V10 - 20180920\Servicio\Certificado
+
+4- la carpeta operativa del servicio se encuentra ubicada en :
+\\ANSESNAS\Sistemas\Sistemas\DOCUMENTACION SISTEMAS ENTORNO ABIERTO\VT-VentanillaUnica\V10 - 20180920\Documentacion DNRPA
+Autenticacion de Windows y Suplantacion de ASP.Net , habilitados
+Canalizacion administrada Clásica, framework 4.0, identidad: ApplicationPoolIdentity.
+
+5- Verificar que las entradas del web.config sean las siguientesm, esta informacion se encuentra respaldada en la pagina 4 del documento de despliegue.
+
+<appSettings>
+<add key="Config.Log4Net" value="Log4net.Config"/>
+<add key="Path_Certificado" value="[PATH-DESIGNADO]\33637617449.p12"/>
+<add key="Clave_Certificado" value="as47dn18"/>
+<add key="rpa.WSDominiosPorCuitANSES" value="https://www.ws1.dnrpa.gov.ar/WS-DominiosPorCuitANSES/WS-DominiosPorCuitANSES/index.php"/>
+</appSettings>
+-----------------------------------------------------------------------------------------------------------------------------------------------
+Solucion error en desarrollo (ansesnegodesapp)
+
+
+El servicio desplegado en ansespresdesapp debe estar impersonado con el usuario particular, no en dapc/user, debido a que se produce una exepcion al intentar
+abrir el certificado, dapc user no configura permisos criptograficos.
+la excepcion generada es :
+2019-03-06 10:24:20,683 [ID (null)] [31] DEBUG servicioDNRPA - URL del Certificado es: E:\Aplicaciones\Sitios\Servicios\ServicioDNRPA.WS\Certificado\33637617449.p12
+2019-03-06 10:24:20,698 [ID (null)] [31] ERROR servicioDNRPA - Dominios_Traer - Error Cryptographic:mscorlib->An internal error occurred.
+-->   at System.Security.Cryptography.CryptographicException.ThrowCryptographicException(Int32 hr)
+   at System.Security.Cryptography.X509Certificates.X509Utils._LoadCertFromFile(String fileName, IntPtr password, UInt32 dwFlags, Boolean persistKeySet, SafeCertContextHandle& pCertCtx)
+   at System.Security.Cryptography.X509Certificates.X509Certificate.LoadCertificateFromFile(String fileName, Object password, X509KeyStorageFlags keyStorageFlags)
+   at System.Security.Cryptography.X509Certificates.X509Certificate2.Import(String fileName, String password, X509KeyStorageFlags keyStorageFlags)
+   at servicioDNRPA.Dominios_Traer(String CUIL_CUIT)-->System.Collections.ListDictionaryInternal

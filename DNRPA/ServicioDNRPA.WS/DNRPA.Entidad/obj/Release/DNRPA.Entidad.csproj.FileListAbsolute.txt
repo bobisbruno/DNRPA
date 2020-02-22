@@ -1,0 +1,6 @@
+C:\Desarrollos\DNRPA\DNRPA.Entidad\bin\Release\ClassLibrary1.dll
+C:\Desarrollos\DNRPA\DNRPA.Entidad\bin\Release\ClassLibrary1.pdb
+C:\Desarrollos\DNRPA\DNRPA.Entidad\obj\Release\DNRPA.Entidad.csprojAssemblyReference.cache
+C:\Desarrollos\DNRPA\DNRPA.Entidad\obj\Release\DNRPA.Entidad.csproj.CoreCompileInputs.cache
+C:\Desarrollos\DNRPA\DNRPA.Entidad\obj\Release\ClassLibrary1.dll
+C:\Desarrollos\DNRPA\DNRPA.Entidad\obj\Release\ClassLibrary1.pdb
